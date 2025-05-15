@@ -1,0 +1,139 @@
+body {
+    background: #8C52FF;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    margin: 0;
+    box-sizing: border-box;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+#weather-container {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    max-width: 900px;
+    width: 100%;
+}
+
+#weather-main {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#weather-icon {
+    width: 120px;
+    height: 120px;
+    display: none;
+}
+
+#weather-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
+    min-width: 250px;
+}
+
+#temp-div p {
+    font-size: 60px;
+    margin: 0;
+}
+
+#weather-info {
+    font-size: 22px;
+    margin: 8px 0;
+}
+
+#datetime {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+#input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid white;
+    font-size: 16px;
+    flex: 1;
+    min-width: 160px;
+}
+
+button {
+    background: #debff4;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    min-width: 120px;
+}
+
+button:hover {
+    background: #8b48d7;
+}
+
+#unit-toggle {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+#unit-toggle label {
+    cursor: pointer;
+}
+
+#hourly-forecast {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+    gap: 10px;
+    padding-bottom: 10px;
+}
+
+.hourly-item {
+    flex: 0 0 auto;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.hourly-item img {
+    width: 30px;
+    height: 30px;
+    margin: 5px 0;
+}
+
+/* Optional scrollbar styling */
+#hourly-forecast::-webkit-scrollbar {
+    height: 6px;
+}
+#hourly-forecast::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px;
+}
