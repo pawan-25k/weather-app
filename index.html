@@ -1,35 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather App</title>
-    <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pro Weather Pro</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="weather-main">
-    <img id="weather-icon" alt="Weather Icon">
 
-    <div id="weather-details">
+  <div id="weather-container">
+    <div class="top-bar">
+      <button id="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </div>
+
+    <div id="weather-main">
+      <div id="weather-visual">
+        <img id="weather-icon" alt="Weather Icon" />
         <div id="temp-div"></div>
-        <div id="weather-info"></div>
+      </div>
+
+      <div id="weather-details">
+        <div id="weather-info">
+          <p id="city-name">Search a City</p>
+          <p id="weather-desc">Enter a location to get started</p>
+        </div>
         <div id="datetime"></div>
 
         <div id="input-group">
-            <input type="text" id="city" placeholder="Enter city">
-            <button onclick="getWeather()">Search</button>
-            <button onclick="getWeatherByLocation()">Use My Location</button>
+          <input type="text" id="city" placeholder="Enter city (e.g. London)" />
+          <button onclick="getWeather()">Search</button>
+          <button onclick="getWeatherByLocation()" title="Use Current Location">📍</button>
         </div>
 
         <div id="unit-toggle">
-            <label><input type="radio" name="unit" value="metric" checked onchange="changeUnit()"> °C</label>
-            <label><input type="radio" name="unit" value="imperial" onchange="changeUnit()"> °F</label>
+          <label><input type="radio" name="unit" value="metric" id="unit-c" onchange="changeUnit()"> °C</label>
+          <label><input type="radio" name="unit" value="imperial" id="unit-f" onchange="changeUnit()"> °F</label>
         </div>
+
+        <div id="loader">Fetching data...</div>
+      </div>
     </div>
-</div>
 
-<div id="hourly-forecast"></div>
+    <hr class="divider">
 
-    <script src="./script.js"></script> 
+    <div id="extra-details">
+      <div class="stat-card">💧 <span>Humidity</span> <b id="humidity">-</b>%</div>
+      <div class="stat-card">🌬 <span>Wind</span> <b id="wind">-</b> <small id="wind-unit">km/h</small></div>
+      <div class="stat-card">🌡 <span>Feels Like</span> <b id="feels">-</b>°</div>
+      <div class="stat-card">📊 <span>Pressure</span> <b id="pressure">-</b> <small>hPa</small></div>
+      <div class="stat-card">👁 <span>Visibility</span> <b id="visibility">-</b> <small>km</small></div>
+      <div class="stat-card">🌫 <span>AQI</span> <b id="aqi">-</b></div>
+    </div>
+
+    <h3 class="section-title">24-Hour Forecast</h3>
+    <div id="hourly-forecast" class="scroll-container"></div>
+
+    <h3 class="section-title">5-Day Forecast</h3>
+    <div id="daily-forecast" class="forecast-grid"></div>
+  </div>
+  
+
+  <script src="script.js"></script>
 </body>
 </html>
