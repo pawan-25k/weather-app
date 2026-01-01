@@ -16,7 +16,7 @@
 
     <div id="weather-main">
       <div id="weather-visual">
-        <img id="weather-icon" alt="Weather Icon" />
+        <img id="weather-icon" alt="Weather Icon" style="display: none;" />
         <div id="temp-div"></div>
       </div>
 
@@ -32,6 +32,8 @@
           <button onclick="getWeather()">Search</button>
           <button onclick="getWeatherByLocation()" title="Use Current Location">📍</button>
         </div>
+
+        <div id="error-message"></div>
 
         <div id="unit-toggle">
           <label><input type="radio" name="unit" value="metric" id="unit-c" onchange="changeUnit()"> °C</label>
@@ -60,7 +62,6 @@
     <div id="daily-forecast" class="forecast-grid"></div>
   </div>
   
-
   <script src="script.js"></script>
 </body>
 </html>
