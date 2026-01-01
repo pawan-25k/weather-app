@@ -19,6 +19,7 @@ body {
 .cloudy { background: linear-gradient(135deg, #9ca3af, #4b5563); color: #fff; }
 .rainy { background: linear-gradient(135deg, #3b82f6, #1e3a8a); color: #fff; }
 .snowy { background: linear-gradient(135deg, #e5e7eb, #94a3b8); color: #1f2937; }
+.haze { background: linear-gradient(135deg, #bdc3c7, #2c3e50); color: #fff; } /* Added Haze */
 .dark { background: linear-gradient(135deg, #0f172a, #020617); color: #fff; }
 
 #weather-container {
@@ -69,13 +70,28 @@ body {
   letter-spacing: -2px;
 }
 
+#weather-icon {
+  width: 150px;
+  height: 150px;
+  filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+}
+
 #city-name { font-size: 32px; font-weight: 700; margin: 0; }
 #weather-desc { font-size: 18px; opacity: 0.9; text-transform: capitalize; }
 
 #input-group {
-  margin: 20px 0;
+  margin: 15px 0 5px;
   display: flex;
   gap: 10px;
+}
+
+/* New Error Styling */
+#error-message {
+  color: #ff4b4b;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  min-height: 20px;
 }
 
 input {
@@ -146,7 +162,7 @@ button:hover {
 
 .divider { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0; }
 
-#loader { display: none; font-weight: 600; color: #6366f1; }
+#loader { display: none; font-weight: 600; color: #6366f1; margin-top: 10px; }
 
 @media(max-width: 600px) {
   #temp-div p { font-size: 60px; }
