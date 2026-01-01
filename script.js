@@ -1,23 +1,29 @@
 const apiKey = "703be15c3de7cef205c81fb034f6066b";
 let unit = localStorage.getItem("unit") || "metric";
 
-// Initialize UI
 document.addEventListener("DOMContentLoaded", () => {
-  // Load saved theme
-  if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark");
+  // Theme Initialization
+  const isDark = localStorage.getItem("theme") === "dark";
+  if (isDark) {
+    document.body.classList.add("dark");
+    document.getElementById("theme-toggle").innerText = "☀️";
+  }
   
-  // Set unit radio button
   document.getElementById(unit === "metric" ? "unit-c" : "unit-f").checked = true;
 
-  // Add Enter key listener
   document.getElementById("city").addEventListener("keypress", (e) => {
     if (e.key === "Enter") getWeather();
   });
 });
 
 function toggleTheme() {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+  const body = document.body;
+  const btn = document.getElementById("theme-toggle");
+  body.classList.toggle("dark");
+  
+  const isDark = body.classList.contains("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+  btn.innerText = isDark ? "☀️" : "🌙";
 }
 
 function changeUnit() {
@@ -26,9 +32,15 @@ function changeUnit() {
   if (document.getElementById("city").value) getWeather();
 }
 
+function showError(msg) {
+  const errorDiv = document.getElementById("error-message");
+  errorDiv.innerText = msg;
+  setTimeout(() => errorDiv.innerText = "", 4000);
+}
+
 function getWeather() {
   const city = document.getElementById("city").value;
-  if (!city) return alert("Please enter a city name");
+  if (!city) return showError("Please enter a city name");
   fetchWeatherData(`q=${city}`);
 }
 
@@ -36,16 +48,18 @@ function getWeatherByLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(pos => {
       fetchWeatherData(`lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
-    }, () => alert("Location access denied"));
+    }, () => showError("Location access denied"));
   }
 }
 
 async function fetchWeatherData(query) {
   const loader = document.getElementById("loader");
+  const errorDiv = document.getElementById("error-message");
+  
   loader.style.display = "block";
+  errorDiv.innerText = ""; 
 
   try {
-    // Current Weather
     const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?${query}&appid=${apiKey}&units=${unit}`);
     const weatherData = await weatherRes.json();
     
@@ -54,7 +68,6 @@ async function fetchWeatherData(query) {
     displayWeather(weatherData);
     fetchAQI(weatherData.coord.lat, weatherData.coord.lon);
 
-    // Forecast (Hourly + Daily)
     const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?${query}&appid=${apiKey}&units=${unit}`);
     const forecastData = await forecastRes.json();
     
@@ -62,29 +75,34 @@ async function fetchWeatherData(query) {
     displayDailyForecast(forecastData.list);
 
   } catch (error) {
-    alert("Error: " + error.message);
+    showError(error.message);
   } finally {
     loader.style.display = "none";
   }
 }
 
 function displayWeather(data) {
-  // Update Background Class
-  document.body.className = document.body.classList.contains("dark") ? "dark" : "";
+  // Update Background and preserve Dark Mode
+  const isDark = document.body.classList.contains("dark");
+  document.body.className = isDark ? "dark" : "";
+  
   const main = data.weather[0].main.toLowerCase();
   if (main.includes("clear")) document.body.classList.add("sunny");
   else if (main.includes("cloud")) document.body.classList.add("cloudy");
   else if (main.includes("rain") || main.includes("drizzle")) document.body.classList.add("rainy");
   else if (main.includes("snow")) document.body.classList.add("snowy");
+  else if (main.includes("haze") || main.includes("mist")) document.body.classList.add("haze");
 
-  // Main Info
-  document.getElementById("weather-icon").src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`;
+  // Icon visibility fix
+  const icon = document.getElementById("weather-icon");
+  icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@4x.png`;
+  icon.style.display = "block";
+
   document.getElementById("temp-div").innerHTML = `<p>${Math.round(data.main.temp)}°</p>`;
   document.getElementById("city-name").innerText = data.name;
   document.getElementById("weather-desc").innerText = data.weather[0].description;
   document.getElementById("datetime").innerText = new Date().toLocaleString([], { weekday: 'long', hour: '2-digit', minute: '2-digit' });
 
-  // Stats
   document.getElementById("humidity").innerText = data.main.humidity;
   document.getElementById("wind").innerText = unit === "metric" ? (data.wind.speed * 3.6).toFixed(1) : data.wind.speed;
   document.getElementById("wind-unit").innerText = unit === "metric" ? "km/h" : "mph";
@@ -119,10 +137,7 @@ function displayHourlyForecast(list) {
 function displayDailyForecast(list) {
   const container = document.getElementById("daily-forecast");
   container.innerHTML = "";
-  
-  // Filter for mid-day readings (12:00:00) to represent the day
   const dailyData = list.filter(item => item.dt_txt.includes("12:00:00"));
-
   dailyData.forEach(item => {
     const day = new Date(item.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
     container.innerHTML += `
