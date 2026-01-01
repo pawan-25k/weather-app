@@ -1,4 +1,4 @@
-# 🌤️ Pro Weather Pro
+# 🌤️ Pro Weather
 
 **Pro Weather Pro** is a sleek, modern, and highly responsive weather application built with vanilla JavaScript. It provides real-time weather data, air quality insights, and detailed forecasts using the OpenWeatherMap API. Featuring a beautiful glassmorphism UI, it dynamically adapts its appearance based on the current weather conditions.
 
